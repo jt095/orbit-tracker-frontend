@@ -1,0 +1,9 @@
+import type { GpData } from "./types/types";
+
+export async function fetchGpData(): Promise<GpData[]> {
+    const res = await fetch("http://localhost:8080/api/gp");
+    if (!res.ok) {
+        throw new Error(`Error: ${res.status} ${res.statusText}`);        
+    }
+    return res.json();
+}
