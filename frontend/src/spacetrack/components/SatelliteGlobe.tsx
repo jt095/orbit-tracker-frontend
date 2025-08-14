@@ -89,7 +89,7 @@ export default function SatelliteGlobe({ satellites }: Props) {
         };
     }, [satellites]);
 
-    return <div ref={cesiumContainer} style={{ width: "100%", height: "600px" }} />;
+    return <div ref={cesiumContainer} style={{ flexGrow: 2, height: "100%" }} />;
 }
 
 function getRandInt(min: number, max: number) {  
