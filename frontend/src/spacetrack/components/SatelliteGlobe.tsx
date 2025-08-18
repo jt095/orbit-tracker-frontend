@@ -16,7 +16,9 @@ export default function SatelliteGlobe({ satellites }: Props) {
         if (!cesiumContainer.current) return;
 
         const viewer = new Cesium.Viewer(cesiumContainer.current, {
-            sceneMode: Cesium.SceneMode.SCENE3D,
+            sceneMode: Cesium.SceneMode.SCENE3D,      
+            baseLayerPicker: false,
+            sceneModePicker: false,
         });
 
         // Simulation start/end
@@ -89,7 +91,7 @@ export default function SatelliteGlobe({ satellites }: Props) {
         };
     }, [satellites]);
 
-    return <div ref={cesiumContainer} style={{ flexGrow: 2, height: "100%" }} />;
+    return <div ref={cesiumContainer} className="cesium-container"/>;
 }
 
 function getRandInt(min: number, max: number) {  

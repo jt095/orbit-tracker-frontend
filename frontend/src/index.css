@@ -1,6 +1,5 @@
 
 @import url("/cesium/Widgets/widgets.css");
-@import "tailwindcss";
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -14,7 +13,7 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-y: hidden;
+  overflow-y: hidden;  
 }
 
 a {
@@ -27,11 +26,8 @@ a:hover {
 }
 
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  margin: 0;  
+  place-items: center;  
 }
 
 h1 {
@@ -73,11 +69,13 @@ button:focus-visible {
 
 /* custom */
 .scrollable-table-container {
-  flex-grow: 1;
-  overflow-y: auto; /* Enable vertical scrolling when content overflows */
+  width: 100%;         /* fill the cell’s width */
+  flex: 1;             /* grow to fill available height */
+  min-height: 0;       /* let it shrink below content height */
+  overflow-y: auto;    /* scroll if content overflows vertically */
   overflow-x: hidden;
-  border: 1px solid #ccc; /* Optional: Add a border for visual clarity */
-  font-size: small;
+  border: 1px solid #ccc;
+  font-size: medium;
 }
 
 .scrollable-table {
@@ -102,4 +100,61 @@ button:focus-visible {
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100px;
+}
+
+.grid-container {
+  height: 100vh;
+  display: grid;
+  grid-template-rows: auto   /* title */
+                     auto   /* tabs */
+                     1fr;   /* main content stretches */
+  grid-template-columns: repeat(10, 1fr);
+  gap: 10px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+.grid-item {  
+  background-color: #213547;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.title-row {
+  grid-column: span 10;
+  font-size: 3rem;
+  font-weight: bold;
+  text-align: left;
+  align-items: center;
+  padding: 10px;  
+  color: white;
+  border-radius: 5px;
+}
+
+/* Parent cell (left column) override */
+.large-col-left {
+  grid-column: span 3;
+}
+
+.grid-item.large-col-left {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.large-col-right {
+  grid-column: span 7; 
+  min-height: 0;  
+}
+
+.cesium-container {
+  width: 100%;    
+  height: 100%;    
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
 }
