@@ -40,3 +40,11 @@ export interface GpData {
     TLE_LINE1: string;
     TLE_LINE2: string;
 }
+
+export interface TLEData {
+    TLE_LINE0: string;
+    TLE_LINE1: string;
+    TLE_LINE2: string;
+}
+
+export type SatelliteEntity = Cesium.Entity;

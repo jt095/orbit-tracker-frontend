@@ -102,6 +102,11 @@ button:focus-visible {
   max-width: 100px;
 }
 
+.selected-tr {
+  background-color: rgb(13, 173, 13);
+  font-weight: bold;
+}
+
 .grid-container {
   height: 100vh;
   display: grid;
