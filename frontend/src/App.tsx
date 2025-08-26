@@ -19,21 +19,16 @@ export default function App() {
 
   useEffect(() => {
     setIsLoading(true);
+    fetchGpData()
+      .then(setGpData)
+      .catch(console.error)      
 
-    if (selectedTab === 0) {
-      fetchGpData()
-        .then(setGpData)
-        .catch(console.error)
-        .finally(() => setIsLoading(false));
-    }
-
-    if (selectedTab === 1) {
-      fetchStarlinkTLEData()
-        .then(setStarlinkData)
-        .catch(console.error)
-        .finally(() => setIsLoading(false));
-    }
-  }, [selectedTab]);
+    fetchStarlinkTLEData()
+      .then(setStarlinkData)
+      .catch(console.error)
+      .finally(() => setIsLoading(false));
+    
+  }, []);
 
   const starlinkEntities = useMemo(() => {
     return createStarlinkCesiumEntities(starlinkData);

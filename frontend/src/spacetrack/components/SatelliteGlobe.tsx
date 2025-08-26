@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as Cesium from "cesium";
 
 Cesium.Ion.defaultAccessToken = import.meta.env.VITE_CESIUM_ION_TOKEN;
@@ -11,19 +11,22 @@ export default function SatelliteGlobe({ entities }: Props) {
 
     const cesiumContainer = useRef<HTMLDivElement>(null);
     const viewerRef = useRef<Cesium.Viewer | null>(null);
+    const [viewerReady, setViewerReady] = useState(false);
 
     useEffect(() => {
+        if (!viewerReady) return;
         const viewer = viewerRef.current;
-        if (!viewer) return;
+        if (!viewer || entities.length === 0) return;
 
         // Clear previous entities
         viewer.entities.removeAll();
 
         // Add new entities
-        entities.forEach(entity => {
-            viewer.entities.add(entity);
-        });
-    }, [entities]);
+        entities.forEach((entity) => viewer.entities.add(entity));
+
+        // Force Cesium to render
+        viewer.scene.requestRender();
+    }, [entities, viewerRef.current]);
     
     useEffect(() => {
         if (!cesiumContainer.current || viewerRef.current) return;
@@ -44,10 +47,7 @@ export default function SatelliteGlobe({ entities }: Props) {
         if (viewer.scene.skyAtmosphere) {
             viewer.scene.skyAtmosphere.show = false;
         }
-
-        if (viewer.scene.skyBox) {
-            viewer.scene.skyBox.show = false;
-        }
+        
         viewer.scene.globe.showGroundAtmosphere = false;
         viewerRef.current = viewer;
 
@@ -58,9 +58,11 @@ export default function SatelliteGlobe({ entities }: Props) {
         viewer.clock.stopTime = stop.clone();
         viewer.clock.currentTime = start.clone();
         viewer.clock.clockRange = Cesium.ClockRange.LOOP_STOP;
-        viewer.clock.multiplier = 16; //16x speed
+        viewer.clock.multiplier = 1; //16x speed
         viewer.timeline.zoomTo(start, stop);
         viewer.clock.shouldAnimate = true;
+
+        setViewerReady(true); // signal that the viewer is ready
 
         return () => {
             if (viewerRef.current) {

@@ -9,7 +9,7 @@ export async function fetchGpData(): Promise<GpData[]> {
 }
 
 export async function fetchStarlinkTLEData(): Promise<TLEData[]> {
-    const res = await fetch("http://localhost:8080/api/starlink");
+    const res = await fetch("http://localhost:8080/api/starlink/static");
     if (!res.ok) {
         throw new Error(`Error: ${res.status} ${res.statusText}`);        
     }

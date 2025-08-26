@@ -2,20 +2,6 @@ import * as Cesium from "cesium";
 import type { GpData } from "../../types/types";
 import { tleToLatLonAlt, getRandomRgba, rgbaArrayToCesiumColor } from "../../utils/satelliteUtils";
 
-// export function createSpaceTrackCesiumEntities(gpList: GpData[]): Cesium.Entity[] {
-//     const entities: Cesium.Entity[] = [];
-
-//     gpList.forEach((sat) => {
-        
-
-//         entities.push(entity);
-//     });
-
-//     return entities;
-// }
-
-
-
 export function createSpaceTrackCesiumEntity(sat: GpData): Cesium.Entity {
     const positions = new Cesium.SampledPositionProperty();
 
