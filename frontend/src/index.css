@@ -163,3 +163,7 @@ button:focus-visible {
   margin: 0;
   overflow: hidden;
 }
+
+.th-select {
+  width: 50%;
+}

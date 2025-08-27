@@ -17,16 +17,16 @@ export default function App() {
 
   // GpList
   const [selectedTab, setSelectedTab] = useState<number>(0);
-  const [days, setDays] = useState<number>(14);
-  const [country, setCountry] = useState<keyof typeof CountryCode>();
+  const [selectedDays, setSelectedDays] = useState<number>(14);
+  const [selectedCountry, setSelectedCountry] = useState<keyof typeof CountryCode | undefined>(undefined);
 
   useEffect(() => {
     setIsLoading(true);
-    fetchGpData(days, country)
+    fetchGpData(selectedDays, selectedCountry)
       .then(setGpData)
       .catch(console.error)      
       .finally(() => setIsLoading(false));
-  }, [days, country]);
+  }, [selectedDays, selectedCountry]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -57,11 +57,18 @@ export default function App() {
   }
 
   const handleCountryChange = (country: CountryCode): void => {
-    setCountry(country);
+    setSelectedCountry(country);
   }
 
   const handleDaysChange = (days: number): void => {
-    setDays(days);
+    setSelectedDays(days);
+  }
+
+  const handleResetGpList = (): void => {
+    setSelectedGpData([]);
+    setSelectedGpEntities([]);
+    setSelectedCountry(undefined);
+    setSelectedDays(14);
   }
 
   const addSpaceTrackCesiumEntity = (newEntity: Cesium.Entity): void => {
@@ -122,8 +129,11 @@ export default function App() {
             gpData={gpData}
             selectedGpData={selectedGpData}
             handleSelectedGpData={handleSelectGpData}
+            selectedCountry={selectedCountry}
             handleCountryChange={handleCountryChange}
-            handleDaysChange={handleDaysChange}/>}        
+            selectedDays={selectedDays}
+            handleDaysChange={handleDaysChange}
+            handleResetGpList={handleResetGpList}/>}        
       </div>
       <div className="grid-item large-col-right">
         {isLoading && <p>LOADING...</p>}

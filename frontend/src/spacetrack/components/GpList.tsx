@@ -7,8 +7,11 @@ interface Props {
     gpData?: GpData[];
     selectedGpData: GpData[];
     handleSelectedGpData: (item: GpData) => void;
+    selectedCountry?: keyof typeof CountryCode;
     handleCountryChange: (country: CountryCode) => void;
+    selectedDays: number;
     handleDaysChange: (days: number) => void;
+    handleResetGpList: () => void;
 }
 
 const checkIsSelected = (sat: GpData, selectedData: GpData[]): boolean => {
@@ -27,22 +30,27 @@ export default function GpList({
     gpData,
     selectedGpData,
     handleSelectedGpData,
+    selectedCountry,
     handleCountryChange,
-    handleDaysChange 
+    selectedDays,
+    handleDaysChange,
+    handleResetGpList
 }: Props) {    
 
     return (
-        <div className="scrollable-table-container">            
+        <div className="scrollable-table-container">                        
             <table className="scrollable-table">
                 <thead>
-                    <tr>
+                    <tr>                        
                         <th className="scrollable-th">
-                            <DaysDropdown onSelect={(days) => handleDaysChange(days)} />
+                            <DaysDropdown selected={selectedDays} onSelect={(days) => handleDaysChange(days)} />
                         </th>
                         <th className="scrollable-th">OBJECT</th>
                         <th className="scrollable-th">
-                            <CountryDropdown onSelect={(code) => handleCountryChange(code)} />
-                        </th>
+                            <CountryDropdown selected={selectedCountry} onSelect={(code) => handleCountryChange(code)} />
+                            <button onClick={handleResetGpList} title="Reset All">⟲</button>
+                        </th>                        
+                        
                     </tr>
                 </thead>
                 <tbody>
