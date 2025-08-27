@@ -1,10 +1,14 @@
-import type { GpData } from "../../types/types";
+import type { GpData, CountryCode } from "../../types/types";
 import { useState } from "react";
+import CountryDropdown from "./CountryCodeDropdown";
+import DaysDropdown from "./DaysDropdown";
 
 interface Props {
     gpData?: GpData[];
     selectedGpData: GpData[];
     handleSelectedGpData: (item: GpData) => void;
+    handleCountryChange: (country: CountryCode) => void;
+    handleDaysChange: (days: number) => void;
 }
 
 const checkIsSelected = (sat: GpData, selectedData: GpData[]): boolean => {
@@ -19,16 +23,26 @@ const checkIsSelected = (sat: GpData, selectedData: GpData[]): boolean => {
     }
 }
 
-export default function GpList({ gpData, selectedGpData, handleSelectedGpData }: Props) {    
+export default function GpList({
+    gpData,
+    selectedGpData,
+    handleSelectedGpData,
+    handleCountryChange,
+    handleDaysChange 
+}: Props) {    
 
     return (
-        <div className="scrollable-table-container">
+        <div className="scrollable-table-container">            
             <table className="scrollable-table">
                 <thead>
                     <tr>
-                        <th className="scrollable-th">LAUNCHED</th>
+                        <th className="scrollable-th">
+                            <DaysDropdown onSelect={(days) => handleDaysChange(days)} />
+                        </th>
                         <th className="scrollable-th">OBJECT</th>
-                        <th className="scrollable-th">COUNTRY</th>
+                        <th className="scrollable-th">
+                            <CountryDropdown onSelect={(code) => handleCountryChange(code)} />
+                        </th>
                     </tr>
                 </thead>
                 <tbody>

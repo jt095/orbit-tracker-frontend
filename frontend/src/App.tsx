@@ -1,7 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import * as Cesium from "cesium";
 import { fetchGpData, fetchStarlinkTLEData } from "./api";
-import type { GpData, SatelliteEntity, TLEData } from "./types/types";
+import { CountryCode, type GpData, type TLEData } from "./types/types";
 import SatelliteGlobe from "./spacetrack/components/SatelliteGlobe";
 import GpList from "./spacetrack/components/GpList";
 import { createSpaceTrackCesiumEntity } from "./data/transformers/spaceTrackTransformer";
@@ -15,14 +15,21 @@ export default function App() {
   const [selectedGpEntities, setSelectedGpEntities] = useState<Cesium.Entity[]>([]);
   const [starlinkData, setStarlinkData] = useState<TLEData[]>([]);
 
-  const [selectedTab, setSelectedTab] = useState<number>(0);  
+  // GpList
+  const [selectedTab, setSelectedTab] = useState<number>(0);
+  const [days, setDays] = useState<number>(14);
+  const [country, setCountry] = useState<keyof typeof CountryCode>();
 
   useEffect(() => {
     setIsLoading(true);
-    fetchGpData()
+    fetchGpData(days, country)
       .then(setGpData)
       .catch(console.error)      
+      .finally(() => setIsLoading(false));
+  }, [days, country]);
 
+  useEffect(() => {
+    setIsLoading(true);
     fetchStarlinkTLEData()
       .then(setStarlinkData)
       .catch(console.error)
@@ -47,6 +54,14 @@ export default function App() {
       setSelectedGpData(prev => [...prev, selectedItem]);
     }
     addSpaceTrackCesiumEntity(entity);           
+  }
+
+  const handleCountryChange = (country: CountryCode): void => {
+    setCountry(country);
+  }
+
+  const handleDaysChange = (days: number): void => {
+    setDays(days);
   }
 
   const addSpaceTrackCesiumEntity = (newEntity: Cesium.Entity): void => {
@@ -106,7 +121,9 @@ export default function App() {
           <GpList 
             gpData={gpData}
             selectedGpData={selectedGpData}
-            handleSelectedGpData={handleSelectGpData}/>}        
+            handleSelectedGpData={handleSelectGpData}
+            handleCountryChange={handleCountryChange}
+            handleDaysChange={handleDaysChange}/>}        
       </div>
       <div className="grid-item large-col-right">
         {isLoading && <p>LOADING...</p>}
